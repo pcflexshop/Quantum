@@ -1,5 +1,5 @@
 
-import React, { useState, createContext, useContext, useEffect } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { INITIAL_SETTINGS, INITIAL_SERVICES, INITIAL_PROJECTS } from './constants';
 import { AppState, SiteSettings, Project, Service } from './types';
@@ -21,13 +21,12 @@ const Navbar = () => {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
 
-  // Handle cross-page navigation to sections
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     if (location.pathname === '/') {
       e.preventDefault();
       const element = document.getElementById(id);
       if (element) {
-        const offset = 80; // height of navbar
+        const offset = 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - offset;
         window.scrollTo({
@@ -58,7 +57,7 @@ const Navbar = () => {
           <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#00FF41] transition-colors">Home</Link>
           <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="hover:text-[#00FF41] transition-colors">Services</a>
           <a href="#portfolio" onClick={(e) => handleNavClick(e, 'portfolio')} className="hover:text-[#00FF41] transition-colors">Portfolio</a>
-          <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className="hover:text-[#00FF41] transition-colors">상담하기</a>
+          <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className="hover:text-[#00FF41] transition-colors">Contact</a>
           <Link 
             to={isAdmin ? "/" : "/admin"} 
             className="flex items-center gap-2 px-6 py-2.5 bg-[#00FF41]/10 border border-[#00FF41]/30 rounded-full hover:bg-[#00FF41] hover:text-black transition-all duration-300 text-white"
@@ -80,7 +79,7 @@ const Navbar = () => {
           <Link to="/" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsOpen(false); }}>Home</Link>
           <a href="#services" onClick={(e) => handleNavClick(e, 'services')}>Services</a>
           <a href="#portfolio" onClick={(e) => handleNavClick(e, 'portfolio')}>Portfolio</a>
-          <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>상담하기</a>
+          <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')}>Contact</a>
           <Link to="/admin" onClick={() => setIsOpen(false)} className="text-[#00FF41] mt-8 border border-[#00FF41]/30 px-10 py-4 rounded-2xl">Dashboard</Link>
         </div>
       </div>
@@ -105,20 +104,17 @@ const App: React.FC = () => {
     setProjects(prev => prev.filter(p => p.id !== id));
   };
 
-  // Shared function for footer links
   const handleInternalLink = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    if (window.location.hash === '#/') {
+    const element = document.getElementById(id);
+    if (element) {
       e.preventDefault();
-      const element = document.getElementById(id);
-      if (element) {
-        const offset = 80;
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -130,6 +126,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="*" element={<LandingPage />} />
           </Routes>
           
           <footer className="bg-black border-t border-white/5 py-24 px-6 relative overflow-hidden">
@@ -143,7 +140,7 @@ const App: React.FC = () => {
                   {settings.brandName}
                 </div>
                 <p className="text-gray-500 text-base leading-relaxed font-light">
-                  미래 지향적 테크놀로지와 시각적 럭셔리의 조화를 추구하는 하이엔드 크리에이티브 스튜디오입니다. 당신의 상상을 현실로 구현합니다.
+                  미래 지향적 테크놀로지와 시각적 럭셔리의 조화를 추구하는 하이엔드 크리에이티브 스튜디오입니다.
                 </p>
                 <div className="mt-8 text-[#00FF41] font-bold text-lg">{settings.phoneNumber}</div>
               </div>
@@ -161,7 +158,6 @@ const App: React.FC = () => {
                   <ul className="space-y-4 text-gray-500 font-medium">
                     <li><Link to="/admin" className="hover:text-white transition-colors">Admin Console</Link></li>
                     <li><Link to="/admin" className="hover:text-white transition-colors">Manage Work</Link></li>
-                    <li><Link to="/admin" className="hover:text-white transition-colors">Site Config</Link></li>
                   </ul>
                 </div>
                 <div className="col-span-2 sm:col-span-1">
@@ -169,16 +165,9 @@ const App: React.FC = () => {
                   <ul className="space-y-4 text-gray-500 font-medium">
                     {settings.socialLinks.youtube && <li><a href={settings.socialLinks.youtube} className="hover:text-white truncate block">YouTube</a></li>}
                     {settings.socialLinks.instagram && <li><a href={settings.socialLinks.instagram} className="hover:text-white truncate block">Instagram</a></li>}
-                    <li><a href={`#contact`} onClick={(e) => handleInternalLink(e, 'contact')} className="hover:text-[#00FF41] truncate block">상담하기</a></li>
+                    <li><a href="#contact" onClick={(e) => handleInternalLink(e, 'contact')} className="hover:text-[#00FF41] truncate block">Contact</a></li>
                   </ul>
                 </div>
-              </div>
-            </div>
-            <div className="max-w-7xl mx-auto mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold tracking-widest text-gray-600 uppercase">
-              <p>© 2024 {settings.brandName}. ALL RIGHTS RESERVED.</p>
-              <div className="flex gap-8">
-                <span className="hover:text-[#00FF41] cursor-pointer">Privacy Policy</span>
-                <span className="hover:text-[#00FF41] cursor-pointer">Terms of Service</span>
               </div>
             </div>
           </footer>
