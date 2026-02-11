@@ -22,7 +22,7 @@ const Navbar = () => {
   const isAdmin = location.pathname.startsWith('/admin');
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' || location.pathname === '') {
       e.preventDefault();
       const element = document.getElementById(id);
       if (element) {
@@ -52,7 +52,7 @@ const Navbar = () => {
           <span className="hidden sm:inline-block tracking-tighter">{settings.brandName}</span>
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Menu - All English for Unity */}
         <div className="hidden md:flex items-center gap-10 font-black text-[10px] tracking-[0.25em] uppercase text-gray-300">
           <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-[#00FF41] transition-colors">Home</Link>
           <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="hover:text-[#00FF41] transition-colors">Services</a>
@@ -126,6 +126,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            {/* Fallback to prevent blank screen on wrong URLs */}
             <Route path="*" element={<LandingPage />} />
           </Routes>
           
@@ -140,7 +141,7 @@ const App: React.FC = () => {
                   {settings.brandName}
                 </div>
                 <p className="text-gray-500 text-base leading-relaxed font-light">
-                  미래 지향적 테크놀로지와 시각적 럭셔리의 조화를 추구하는 하이엔드 크리에이티브 스튜디오입니다.
+                  미래 지향적 테크놀로지와 시각적 럭셔리의 조화를 추구하는 하이엔드 크리에이티브 스튜디오입니다. 당신의 비전을 현실로 만듭니다.
                 </p>
                 <div className="mt-8 text-[#00FF41] font-bold text-lg">{settings.phoneNumber}</div>
               </div>
@@ -154,18 +155,18 @@ const App: React.FC = () => {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-black text-[#00FF41] mb-8 uppercase tracking-[0.2em] text-xs">Dashboard</h4>
+                  <h4 className="font-black text-[#00FF41] mb-8 uppercase tracking-[0.2em] text-xs">Admin</h4>
                   <ul className="space-y-4 text-gray-500 font-medium">
-                    <li><Link to="/admin" className="hover:text-white transition-colors">Admin Console</Link></li>
-                    <li><Link to="/admin" className="hover:text-white transition-colors">Manage Work</Link></li>
+                    <li><Link to="/admin" className="hover:text-white transition-colors">Console</Link></li>
+                    <li><Link to="/admin" className="hover:text-white transition-colors">Management</Link></li>
                   </ul>
                 </div>
                 <div className="col-span-2 sm:col-span-1">
-                  <h4 className="font-black text-[#00FF41] mb-8 uppercase tracking-[0.2em] text-xs">Contact</h4>
+                  <h4 className="font-black text-[#00FF41] mb-8 uppercase tracking-[0.2em] text-xs">Connect</h4>
                   <ul className="space-y-4 text-gray-500 font-medium">
-                    {settings.socialLinks.youtube && <li><a href={settings.socialLinks.youtube} className="hover:text-white truncate block">YouTube</a></li>}
-                    {settings.socialLinks.instagram && <li><a href={settings.socialLinks.instagram} className="hover:text-white truncate block">Instagram</a></li>}
-                    <li><a href="#contact" onClick={(e) => handleInternalLink(e, 'contact')} className="hover:text-[#00FF41] truncate block">Contact</a></li>
+                    {settings.socialLinks.youtube && <li><a href={settings.socialLinks.youtube} target="_blank" rel="noreferrer" className="hover:text-white truncate block">YouTube</a></li>}
+                    {settings.socialLinks.instagram && <li><a href={settings.socialLinks.instagram} target="_blank" rel="noreferrer" className="hover:text-white truncate block">Instagram</a></li>}
+                    <li><a href="#contact" onClick={(e) => handleInternalLink(e, 'contact')} className="hover:text-[#00FF41] truncate block font-black">Contact Us</a></li>
                   </ul>
                 </div>
               </div>
